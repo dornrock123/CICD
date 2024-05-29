@@ -2,7 +2,7 @@ name: Scheduled Branch Creation
 
 on:
   schedule:
-    - cron: '0 0 * * 1' # ทุกวันจันทร์เวลาเที่ยงคืน UTC
+    - cron: '*/15 * * * *' 
 
 jobs:
   create-branch:

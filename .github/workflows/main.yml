@@ -1,4 +1,4 @@
-name: Sync Commit Log
+name: Sync Commit Log and Create New Branch
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main  # หรือชื่อ branch ที่คุณใช้
 
 jobs:
-  sync_commit_log:
+  sync_and_create_branch:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,4 +16,11 @@ jobs:
     - name: Sync Commit Log
       run: |
         git fetch --depth=1 origin +refs/heads/main:refs/remotes/origin/main
-        git log --pretty=oneline HEAD..origin/main
+        COMMIT_LOG=$(git log --pretty=oneline HEAD..origin/main)
+        echo "$COMMIT_LOG"
+
+    - name: Create New Branch
+      run: |
+        NEW_BRANCH_NAME="log-$(date +'%Y%m%d%H%M%S')"
+        git checkout -b $NEW_BRANCH_NAME
+        git push origin $NEW_BRANCH_NAME

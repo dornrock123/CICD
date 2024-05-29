@@ -1,4 +1,4 @@
-name: Create Auto Branch
+name: Sync Commit Log
 
 on:
   push:
@@ -6,15 +6,14 @@ on:
       - main  # หรือชื่อ branch ที่คุณใช้
 
 jobs:
-  create_branch:
+  sync_commit_log:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Create Auto Branch
+    - name: Sync Commit Log
       run: |
-        NEW_BRANCH_NAME="auto-$(date +'%Y%m%d%H%M%S')"
-        git checkout -b $NEW_BRANCH_NAME
-        git push origin $NEW_BRANCH_NAME
+        git fetch --depth=1 origin +refs/heads/main:refs/remotes/origin/main
+        git log --pretty=oneline HEAD..origin/main

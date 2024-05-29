@@ -37,7 +37,7 @@ jobs:
   create_branch:
     needs: check_data_changes
     runs-on: ubuntu-latest
-    if: ${{ env.data_changed == 'true' }}
+    if: ${{ data_changed == 'true' }} # ลบ env ออกจากนี้
 
     steps:
     - name: Check out repository

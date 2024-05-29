@@ -9,6 +9,10 @@ jobs:
   check_data_changes:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version: ['18']
+        
     outputs:
       data_changed: ${{ steps.check.outputs.data_changed }}
 

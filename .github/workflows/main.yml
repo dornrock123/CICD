@@ -1,0 +1,21 @@
+name: Create Auto Branch
+
+on:
+  push:
+    branches:
+      - main  # หรือชื่อ branch ที่คุณใช้
+
+jobs:
+  create_branch:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Create Auto Branch
+      run: |
+        # สร้างชื่อ branch ที่มีรูปแบบ "auto" + timestamp
+        NEW_BRANCH_NAME="auto-$(name +'%Y%m%d%H%M%S')"
+        git checkout -b $NEW_BRANCH_NAME
+        git push origin $NEW_BRANCH_NAME

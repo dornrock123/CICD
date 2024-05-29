@@ -2,7 +2,7 @@ name: Scheduled Branch Creation
 
 on:
   schedule:
-    - cron: '*/15 * * * *' 
+
 
 jobs:
   create-branch:

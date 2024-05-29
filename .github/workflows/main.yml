@@ -1,0 +1,55 @@
+name: CI Auto Branching on Data Change
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  check_data_changes:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v2
+
+    - name: Check for data changes
+      id: check_changes
+      run: |
+        # Replace 'data/' with the path to your data files or directory
+        if git diff --name-only HEAD~1 HEAD | grep 'src/'; then
+          echo "data_changed=true" >> $GITHUB_ENV
+        else
+          echo "data_changed=false" >> $GITHUB_ENV
+        fi
+
+  create_branch:
+    needs: check_data_changes
+    runs-on: ubuntu-latest
+    if: env.data_changed == 'true'
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v2
+
+    - name: Configure Git
+      run: |
+        git config user.name "dornrock123"
+        git config user.email "krisd3214@gmail.com"
+
+    - name: Create new branch
+      run: |
+        BRANCH_NAME=update-data-$(date +%Y%m%d%H%M%S)
+        git checkout -b $BRANCH_NAME
+        git add .
+        git commit -m "Automated update data branch creation"
+        git push origin $BRANCH_NAME
+
+    - name: Create pull request
+      uses: krisdorn/create-pull-request@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        branch: $BRANCH_NAME
+        title: "Automated Update Data Branch"
+        body: "This pull request contains automated updates to data files."
+

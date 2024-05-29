@@ -14,7 +14,12 @@ jobs:
 
     steps:
     - name: Check out repository
-      uses: actions/checkout@v3 # Updated to use Node.js 20
+      uses: actions/checkout@v3 # Uses Node.js 20 by default
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.13.0'
 
     - name: Check for data changes
       id: check
@@ -36,7 +41,12 @@ jobs:
 
     steps:
     - name: Check out repository
-      uses: actions/checkout@v3 # Updated to use Node.js 20
+      uses: actions/checkout@v3 # Uses Node.js 20 by default
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.13.0'
 
     - name: Configure Git
       run: |

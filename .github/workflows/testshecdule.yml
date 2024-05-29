@@ -1,0 +1,29 @@
+name: Scheduled Branch Creation
+
+on:
+  schedule:
+    - cron: '*/15 * * * *' # ทุกวันจันทร์เวลาเที่ยงคืน UTC
+
+jobs:
+  create-branch:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Configure Git
+      run: |
+        git config --global user.name 'github-actions'
+        git config --global user.email 'github-actions@github.com'
+
+    - name: Create new branch
+      run: |
+        NEW_BRANCH="scheduled-branch-$(date +%Y%m%d)"
+        echo "Creating new branch: $NEW_BRANCH"
+        git checkout -b $NEW_BRANCH
+        git push origin $NEW_BRANCH
+
+    - name: Verify branch creation
+      run: |
+        git branch -r

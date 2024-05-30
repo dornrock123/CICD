@@ -20,7 +20,7 @@ RUN npm run build -- --configuration=production
 FROM nginx:alpine
 
 # คัดลอกไฟล์ build จากภาพ builder มายังโฟลเดอร์ที่เหมาะสมใน Nginx
-COPY --from=builder /src/app/dist /usr/share/nginx/html
+COPY --from=builder /app/dist /usr/share/nginx/html
 
 # Expose port 80 to the outside world
 EXPOSE 80

@@ -20,4 +20,4 @@ RUN ng build --prod
 EXPOSE 3000
 
 # กำหนดคำสั่งที่จะใช้เมื่อเริ่มต้น container
-CMD ["node", "server.js"]  # แทน server.js ด้วยชื่อไฟล์ของ server ของคุณ
+CMD ["node", "server.js"]

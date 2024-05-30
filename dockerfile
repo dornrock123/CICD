@@ -1,5 +1,5 @@
 # เลือกฐานข้อมูลของภาพเริ่มต้นที่มี Node.js
-FROM node:14 as builder
+FROM node:16 as builder
 
 # ตั้งค่าโฟลเดอร์ทำงาน
 WORKDIR /app

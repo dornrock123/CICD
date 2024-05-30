@@ -1,5 +1,5 @@
 # เลือกฐานข้อมูลของภาพเริ่มต้นที่มี Node.js
-FROM node:16 as builder
+FROM node:18 as builder
 
 # ตั้งค่าโฟลเดอร์ทำงาน
 WORKDIR /app
@@ -20,7 +20,7 @@ RUN npm run build -- --configuration=production
 FROM nginx:alpine
 
 # คัดลอกไฟล์ build จากภาพ builder มายังโฟลเดอร์ที่เหมาะสมใน Nginx
-COPY --from=builder /app /usr/share/nginx/html
+COPY --from=builder /app/dist /usr/share/nginx/html
 
 # Expose port 80 to the outside world
 EXPOSE 80

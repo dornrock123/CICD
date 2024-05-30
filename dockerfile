@@ -1,23 +1,29 @@
-# ใช้ Node.js image ล่าสุด
-FROM node:latest
+# เลือกฐานข้อมูลของภาพเริ่มต้นที่มี Node.js
+FROM node:18 as builder
 
-# ติดตั้ง Angular CLI และ dependencies ของโปรเจค
-RUN npm install -g @angular/cli
+# ตั้งค่าโฟลเดอร์ทำงาน
+WORKDIR /app
 
-# กำหนดไดเรกทอรีที่เราจะทำงานใน container
-WORKDIR /usr/src/app
+# คัดลอกไฟล์ package.json และ package-lock.json เข้าไปยังโฟลเดอร์ทำงาน
+COPY package*.json ./
 
-# คัดลอกโฟลเดอร์โปรเจคทั้งหมดเข้าไปใน container
-COPY . .
-
-# ติดตั้ง dependencies ของโปรเจค Node.js
+# ติดตั้ง dependencies โดยใช้ npm
 RUN npm install
 
-# สร้างและ compile Angular app
-RUN ng build
+# คัดลอกโค้ด Angular app เข้าไปยังโฟลเดอร์ทำงาน
+COPY . .
 
-# เปิดพอร์ตที่ Node.js server ใช้ (เช่น 3000)
-EXPOSE 3000
+# สร้างและ compile Angular app สำหรับ production
+RUN npm run build -- --configuration=production
 
-# กำหนดคำสั่งที่จะใช้เมื่อเริ่มต้น container
-CMD ["node", "server.js"]
+# ขั้นตอนการสร้างภาพ Docker สำหรับ production
+FROM nginx:alpine
+
+# คัดลอกไฟล์ build จากภาพ builder มายังโฟลเดอร์ที่เหมาะสมใน Nginx
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Expose port 80 to the outside world
+EXPOSE 80
+
+# คำสั่งเริ่มต้นของ Nginx เมื่อ container ถูกเรียกใช้
+CMD ["nginx", "-g", "daemon off;"]

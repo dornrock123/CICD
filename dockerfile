@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # ติดตั้ง dependencies โดยใช้ npm
-RUN npm install -g @angular/cli@12.2.6
+RUN npm install
 
 # คัดลอกโค้ด Angular app เข้าไปยังโฟลเดอร์ทำงาน
 COPY . .

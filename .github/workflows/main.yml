@@ -14,27 +14,27 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build Docker Image
       run: |
-        docker build -t krisneonploy/myapp:${{ github.sha }} .
+        docker build -t krisneonploy/dorn:${{ github.sha }} .
   
     - name: Push Docker Image
       
       run: |  
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-        docker push krisneonploy/myapp:${{ github.sha }}
+        docker push krisneonploy/dorn:${{ github.sha }}
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
     - name: Deploy to Staging
       run: |
-        docker pull krisneonploy/myapp:${{ github.sha }}
-        docker run -d --name staging krisneonploy/myapp:${{ github.sha }}
+        docker pull krisneonploy/dorn:${{ github.sha }}
+        docker run -d --name staging krisneonploy/dorn:${{ github.sha }}
     - name: Smoke Tests
       run: |
         
     - name: Deploy to Production
       if: success()  
       run: |
-        docker pull krisneonploy/myapp:${{ github.sha }}
+        docker pull krisneonploy/dorn:${{ github.sha }}
         docker stop production && docker rm production
-        docker run -d --name production krisneonploy/myapp:${{ github.sha }}
+        docker run -d --name production krisneonploy/dorn:${{ github.sha }}

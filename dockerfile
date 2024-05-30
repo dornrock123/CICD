@@ -14,7 +14,7 @@ COPY . .
 RUN npm install
 
 # สร้างและ compile Angular app
-RUN ng build --prod
+RUN ng build
 
 # เปิดพอร์ตที่ Node.js server ใช้ (เช่น 3000)
 EXPOSE 3000

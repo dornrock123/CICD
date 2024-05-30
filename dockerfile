@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # สร้างและ compile Angular app สำหรับ production
-RUN npm run build -- --configuration=production
+RUN ng build -- --configuration=production
 
 # ขั้นตอนการสร้างภาพ Docker สำหรับ production
 FROM nginx:alpine
